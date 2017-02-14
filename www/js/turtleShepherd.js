@@ -205,7 +205,7 @@ TurtleShepherd.prototype.toSVG = function() {
                             ')" d="M ' +
                             (lastStich.x - this.minX) +
                             ' ' +
-                            (lastStich.y - this.minY ) +
+                            (this.maxY - lastStich.y) +
                             ' L ' +
                             (stitch.x - this.minX) +
                             ' ' +
