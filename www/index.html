@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<title>Stitchpad.io</title>
+
+		<!-- material -->
+		<link rel="stylesheet" href="lib/material-design-lite/material.min.css">
+		<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.blue_grey-orange.min.css" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="stylesheet" type="text/css" href="lib/dialog-polyfill/dialog-polyfill.css" />
+		<!-- main custom styles -->
+		<link rel="stylesheet" href="css/app.css" >
+
+		<!-- js libraries -->
+		<script src="lib/material-design-lite/material.min.js"></script>
+		<script src="lib/jquery/dist/jquery.min.js"></script>
+		<script src="lib/two.js/build/two.min.js"></script>
+		<script src="lib/file-saver/FileSaver.min.js"></script>
+		<script src="js/third-party/url.js"></script>
+		<script src="js/third-party/zui.js"></script>
+		<script src="js/turtleShepherd.js"></script>
+		<script src="js/app.js"></script>
+
+	</head>
+
+	<body>
+		<!-- Always shows a header, even in smaller screens. -->
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+			<header class="mdl-layout__header">
+				<div class="mdl-layout__header-row">
+					<span class="mdl-layout-title">Stitchpad</span>
+					<div class="mdl-layout-spacer"></div>
+
+					<nav class="mdl-navigation mdl-layout--large-screen-only">
+						<a class="ts-about mdl-navigation__link" href="#">ABOUT</a>
+					</nav>
+
+					<button id="demo-menu-lower-right"
+							class="mdl-button mdl-js-button mdl-button--icon">
+					  <i class="material-icons">more_vert</i>
+					</button>
+					<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+						for="demo-menu-lower-right">
+					  <li class="ts-clear mdl-menu__item">New/Clear</li>
+					  <li class="ts-save  mdl-menu__item">Save as ..</li>
+					  <li class="ts-image mdl-menu__item">Background ..</li>
+					  <li class="ts-about  mdl-menu__item">About</li>
+					</ul>
+
+				</div>
+			</header>
+
+			<div class="mdl-layout__drawer">
+				<span class="mdl-layout-title">Stitchpad</span>
+				<nav class="mdl-navigation">
+					<a class="ts-clear mdl-navigation__link" href="#">New/Clear</a>
+					<a class="ts-save mdl-navigation__link" href="#">Save as..</a>
+					<a class="ts-image mdl-navigation__link" href="#">Background ..</a>
+					<a class="ts-about mdl-navigation__link" href="#">About</a>
+				</nav>
+			</div>
+
+			<main class="mdl-layout__content">
+				<div class="page-content"><!-- Your content goes here -->
+
+					<div id="grid"></div>
+					<div id="back"></div>
+					<div id="stage"></div>
+				</div>
+			</main>
+
+			<footer>&nbsp;</footer>
+
+			<div class="bottom-nav">
+				<button title="CLEARSCREEN"
+					class="ts-clear mdl-button mdl-js-button mdl-button--primary mdl-button--fab mdl-button--mini-fab mdl-button--raised mdl-js-ripple-effect">
+				  <i class="material-icons">delete</i>
+				</button>
+				<button title="ADD JUMP STITCH"
+					class="ts-jump mdl-button mdl-js-button mdl-button--primary mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+				  <i class="material-icons">flight_takeoff</i>
+				</button>
+				<button id="ts-interpolate" title="INTERPOLATE" disabled
+					class="mdl-button mdl-js-button mdl-button--primary mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+				  <i class="material-icons">linear_scale</i>
+				</button>
+				<button title="BACKGROUND IMAGE"
+					class="ts-image mdl-button mdl-js-button mdl-button--primary mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+				  <i class="material-icons">photo</i>
+				</button>
+				<button title="TOGGLE GRID"
+					class="ts-grid mdl-button mdl-js-button mdl-button--primary mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+				  <i class="material-icons">grid_off</i>
+				</button>
+				<button title="DOWNLOAD"
+					class="ts-save mdl-button mdl-js-button mdl-button--primary mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+				  <i class="material-icons">file_download</i>
+				</button>
+				<button title="UNDO"
+					class="ts-undo mdl-button mdl-js-button mdl-button--primary mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
+				  <i class="material-icons">undo</i>
+				</button>
+		  </div>
+
+		</div>
+
+
+		<!-- dialogs -->
+		<script src="lib/dialog-polyfill/dialog-polyfill.js"></script>
+
+
+		<dialog id="ts-image-dialog" class="mdl-dialog"  style="min-width:30%">
+			<h4 class="mdl-dialog__title">Select Background</h4>
+			<div class="mdl-dialog__content">
+				<br />
+				<form>
+				 <div class="file_input_div">
+					<div class="file_input">
+					  <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--primary">
+						<i class="material-icons">file_upload</i>
+						<input id="file_input_file" class="none" type="file" />
+					  </label>
+					</div>
+					<div id="file_input_text_div" class="mdl-textfield mdl-js-textfield textfield-demo">
+					  <input class="file_input_text mdl-textfield__input" type="text" disabled readonly id="file_input_text" />
+					  <label class="mdl-textfield__label" for="file_input_text"></label>
+					</div>
+				  </div>
+				<label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="ts-image-zoom-to-fit">
+					<input type="checkbox" id="ts-image-zoom-to-fit" class="mdl-switch__input" checked>
+					<span class="mdl-switch__label">Zoom to fit</span>
+				</label>
+
+				</form>
+			</div>
+			<div class="mdl-dialog__actions">
+
+			  <button type="button" class="mdl-button" id="ts-image-dialog-confirm-button">OK</button>
+			  <button type="button" class="mdl-button close" id="ts-image-dialog-close-button">Close</button>
+			   <button type="button" class="mdl-button ts-image-clear">Clear</button>
+			</div>
+		</dialog>
+		<script src="js/third-party/file_input.js"></script>
+		<script>
+			var load_image_dialog = document.querySelector('#ts-image-dialog');
+			var load_image_dialog_button = $('.ts-image');
+			var load_image_dialog_close_button = $('#ts-image-dialog-close-button');
+			var load_image_dialog_confirm_button = $('#ts-image-dialog-confirm-button')
+
+			if (!load_image_dialog.showModal) {
+				dialogPolyfill.registerDialog(load_image_dialog);
+			}
+
+			load_image_dialog_button.click( function() {
+				load_image_dialog.showModal();
+			});
+			load_image_dialog_close_button.click( function(e) {
+				load_image_dialog.close();
+			});
+
+			load_image_dialog_confirm_button.click(function(e) {
+				var file = $("#file_input_file").prop('files')[0];
+				var reader = new FileReader();
+
+				reader.onloadend = function(){
+					$("#back").css("background-image","url(" + reader.result + ")");
+					$("#back").css("background-position","center");
+					$("#back").css("background-repeat","no-repeat");
+					if ($("#ts-image-zoom-to-fit").prop( "checked" ))
+						$("#back").css("background-size","contain");
+					else
+						$("#back").css("background-size","auto");
+				}
+				if(file){
+				  reader.readAsDataURL(file);
+				} else {
+					//there is some error
+				}
+				load_image_dialog.close();
+			});
+
+			$(".ts-image-clear").click( function(){
+				$("#back").css("background-image","url()");
+				load_image_dialog.close();
+			});
+		</script>
+
+		<dialog id="ts-save-dialog" class="mdl-dialog ts-save-dialog" style="min-width:30%">
+			<h4 class="mdl-dialog__title">Save as</h4>
+			<div class="mdl-dialog__content">
+				<form action="#" id="ts-do-save-form">
+					<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						<input class="mdl-textfield__input" type="text" id="projectname">
+						<label class="mdl-textfield__label" for="projectname">Name:</label>
+					</div><br />
+					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="exp">
+					  <input checked class="mdl-radio__button" id="exp" name="format" type="radio" value="exp">
+					  <span class="mdl-radio__label">Melco/EXP</span>
+					</label><br />
+					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="dst">
+					  <input class="mdl-radio__button" id="dst" name="format" type="radio" value="dst">
+					  <span class="mdl-radio__label">Tajima/DST</span>
+					</label><br />
+					<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="svg">
+					  <input class="mdl-radio__button" id="svg" name="format" type="radio" value="svg">
+					  <span class="mdl-radio__label">SVG</span>
+					</label>
+				</form>
+			</div>
+			<div class="mdl-dialog__actions">
+			  <button type="button" class="mdl-button" id="ts-do-save">OK</button>
+			  <button type="button" class="mdl-button" id="ts-save-close">Close</button>
+			</div>
+		</dialog>
+
+		<script>
+			var save_dialog = document.querySelector('.ts-save-dialog')
+			var save_dialog_button = $('.ts-save');
+			var save_dialog_close_button = $('#ts-save-close');
+			var save_dialog_confirm_button = $('#ts-do-save')
+
+			if (!save_dialog.showModal) {
+				dialogPolyfill.registerDialog(save_dialog);
+			}
+			save_dialog_button.click( function() {
+				save_dialog.showModal();
+			});
+			save_dialog_close_button.click( function(e) {
+				save_dialog.close();
+			});
+			save_dialog_confirm_button.click(function(e) {
+				$('#ts-do-save-form').submit();
+			});
+		</script>
+
+		<dialog id="ts-about-dialog" class="mdl-dialog" style="min-width:30%">
+			<h4 class="mdl-dialog__title">About Stitchpad</h4>
+			<div class="mdl-dialog__content">
+				<p>Stitchpad 0.1</p>
+				<p>A sketch block for drawing simple embroidery graphics</p>
+				<p>Stitchpad is developed by <a href="http://www.stitchcode.com">Stichcode</a>
+				and  <a href="http://www.turtlestitch.org">Turtlestitch</a></p>
+				<p>Copyright &copy; Michael Aschauer, 2017</p>
+			</div>
+			<div class="mdl-dialog__actions">
+			  <button type="button" class="mdl-button" id="ts-about-close">Close</button>
+			</div>
+		</dialog>
+
+		<script>
+			var about_dialog = document.querySelector('#ts-about-dialog')
+			var about_dialog_button = $('.ts-about');
+			var about_dialog_close_button = $('#ts-about-close');
+
+			if (!about_dialog.showModal) {
+				dialogPolyfill.registerDialog(about_dialog);
+			}
+			about_dialog_button.click( function() {
+				about_dialog.showModal();
+			});
+			about_dialog_close_button.click( function(e) {
+				about_dialog.close();
+			});
+		</script>
+
+	</body>
+</html>

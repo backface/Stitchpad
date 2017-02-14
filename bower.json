@@ -1,0 +1,25 @@
+{
+  "name": "stitchpad",
+  "authors": [
+    "Michael Aschauer <m@ash.to>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "GNU AGPL",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "www/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "file-saver": "filesaver#^1.3.3",
+    "two.js": "^0.6.0",
+    "material-design-lite": "^1.3.0",
+    "dialog-polyfill": "^0.4.6",
+    "jquery": "^3.1.1"
+  }
+}
