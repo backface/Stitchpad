@@ -2,7 +2,6 @@ $(function() {
 	createGrid();
 
 	var type = /(canvas|webgl)/.test(url.type) ? url.type : 'svg';
-	//var type = 'webgl';
 	var elem = document.getElementById('stage');
 	var two = new Two({
 		type: Two.Types[type],
@@ -15,6 +14,15 @@ $(function() {
 	var lines = two.makeGroup();
 	var isJump = false;
 	var dragged = false;
+	var interpolate = false;
+	var dist_min = 8;
+	var dist_max = 10;
+
+	// TODO: PAN/Zoom
+	// TODO: plus pinch-to-zoom for mobile.
+
+	/*
+
 	var dy = 1;
 	var scene_transform = {
 		ticking: false,
@@ -30,11 +38,6 @@ $(function() {
 		},
 		origin: {},
 	};
-
-	// TODO: PAN/Zoom
-	// TODO: pinch-to-zoom for mobile.
-
-	/*
 
 	var zui = new ZUI(two);
 	zui.addLimits(0.06, 8);*
@@ -77,9 +80,14 @@ $(function() {
 	};
 
 	var addLine = function(pos1, pos2) {
-		var line = two.makeLine(pos1.x, pos1.y, pos2.x, pos2.y);
+		var line;
+		var dist = Math.sqrt(
+			Math.pow((pos1.x - pos2.x), 2) +
+			Math.pow((pos1.y - pos2 .y ), 2)
+		);
 
 		if (isJump) {
+			line = two.makeLine(pos1.x, pos1.y, pos2.x, pos2.y);
 			line.noFill().stroke = '#f00';
 			line.linewidth = 1;
 			line.opacity = 0.5;
@@ -87,37 +95,58 @@ $(function() {
 			turtleShepherd.moveTo(pos1.x, -pos1.y, pos2.x, -pos2.y, false);
 			toogleJump();
 		} else {
-			line.noFill().stroke = '#333';
-			line.linewidth = 2;
-			lines.add(line);
-			turtleShepherd.moveTo(pos1.x, -pos1.y, pos2.x, -pos2.y, true);
+				line = two.makeLine(pos1.x, pos1.y, pos2.x, pos2.y);
+				line.noFill().stroke = '#333';
+				line.linewidth = 2;
+				lines.add(line);
+				turtleShepherd.moveTo(pos1.x, -pos1.y, pos2.x, -pos2.y, true);
 		}
 	};
 
 	var drag = function(e) {
-		dragged = true;
-		var pos =  new Two.Vector(e.clientX, e.clientY);
-		if (lastPos) {
-			var dist = Math.sqrt( Math.pow((lastPos.x - pos.x), 2) + Math.pow((lastPos.y - pos.y ), 2) );
-			if (dist > 8) {
+			dragged = true;
+			var pos =  new Two.Vector(e.clientX, e.clientY);
+			if (lastPos) {
+				var dist = Math.sqrt( Math.pow((lastPos.x - pos.x), 2) + Math.pow((lastPos.y - pos.y ), 2) );
+				if  (dist > dist_max && interpolate) {
+					p = lineInterpolate( lastPos, pos, dist_min );
+					for (var i = 0; i < p.length-1; i++) {
+						addPoint(p[i+1]);
+						addLine(p[i],p[i+1]);
+						lastPos = p[i+1];
+					}
+				} else if (dist > dist_min) {
+					addPoint(pos);
+					addLine(lastPos, pos);
+					lastPos = pos;
+				}
+			} else {
 				addPoint(pos);
-				addLine(lastPos, pos);
 				lastPos = pos;
 			}
-		} else {
-			addPoint(pos);
-			lastPos = pos;
-		}
 	};
 
 	var dragEnd = function(e) {
 		var pos =  new Two.Vector(e.clientX, e.clientY);
 		if (!dragged) {
 			if (lastPos) {
-				addLine(lastPos, pos);
+				var dist = Math.sqrt( Math.pow((lastPos.x - pos.x), 2) + Math.pow((lastPos.y - pos.y ), 2) );
+				if  (dist > dist_max && interpolate) {
+					p = lineInterpolate( lastPos, pos, dist_min );
+					for (var i = 0; i < p.length-1; i++) {
+						addPoint(p[i+1]);
+						addLine(p[i],p[i+1]);
+						lastPos = p[i+1];
+					}
+				} else {
+					addLine(lastPos, pos);
+					addPoint(pos);
+					lastPos = pos;
+				}
+			} else {
+				addPoint(pos);
+				lastPos = pos;
 			}
-			addPoint(pos);
-			lastPos = pos;
 		}
 		dragged = false;
 		$(this)
@@ -232,6 +261,15 @@ $(function() {
 		}
 	};
 
+	var toogleInterpolate = function() {
+		interpolate = !interpolate;
+		if (interpolate) {
+			$(".ts-interpolate").addClass("mdl-button--accent");
+		} else {
+			$(".ts-interpolate").removeClass("mdl-button--accent");
+		}
+	};
+
 
 	$(".ts-clear").click ( function(e) {
 		e.preventDefault();
@@ -240,6 +278,10 @@ $(function() {
 
 	$(".ts-jump").click ( function(e) {
 		toogleJump();
+	});
+
+	$(".ts-interpolate").click ( function(e) {
+		toogleInterpolate();
 	});
 
 	$(".ts-undo").click ( function(e) {
