@@ -256,6 +256,10 @@ $(function() {
 		if (event.key == 'c') {
 			clear();
 		}
+		if (event.key == 's') {
+			save_dialog.showModal();
+			event.preventDefault();
+		}
 		if (event.key == 'b') {
 			load_image_dialog.showModal();
 		}
