@@ -247,6 +247,15 @@ $(function() {
 		if (event.key == 'j') {
 			toogleJump();
 		}
+		if (event.key == 'i') {
+			toogleInterpolate();
+		}
+		if (event.key == 'g') {
+			toggleGrid();
+		}
+		if (event.key == 'b') {
+			load_image_dialog.showModal();
+		}
 		if (event.key == 'z' && event.ctrlKey) {
 			undo();
 		}
@@ -270,6 +279,14 @@ $(function() {
 		}
 	};
 
+	var toogleGrid = function() {
+		$("#grid").toggle();
+		if ($(".grid").is(":visible"))
+			$(".ts-grid i").html("grid_off");
+		else
+			$(".ts-grid i").html("grid_on");
+	};
+
 
 	$(".ts-clear").click ( function(e) {
 		e.preventDefault();
@@ -289,11 +306,7 @@ $(function() {
 	});
 
 	$(".ts-grid").click ( function(e) {
-		$("#grid").toggle();
-		if ($(".grid").is(":visible"))
-			$(".ts-grid i").html("grid_off");
-		else
-			$(".ts-grid i").html("grid_on");
+		toogleGrid();
 	});
 
 	function createGrid(s) {
