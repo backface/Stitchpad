@@ -15,7 +15,7 @@ $(function() {
 	var isJump = false;
 	var dragged = false;
 	var interpolate = false;
-	var dist_min = 9;
+	var dist_min = 8;
 	var dist_max = 12;
 
 	// TODO: PAN/Zoom
@@ -109,7 +109,7 @@ $(function() {
 			if (lastPos) {
 				var dist = Math.sqrt( Math.pow((lastPos.x - pos.x), 2) + Math.pow((lastPos.y - pos.y ), 2) );
 				if  (dist > dist_max && interpolate) {
-					p = lineInterpolate( lastPos, pos, dist_min );
+					p = lineInterpolate( lastPos, pos, dist_min, dist );
 					for (var i = 0; i < p.length-1; i++) {
 						addPoint(p[i+1]);
 						addLine(p[i],p[i+1]);
@@ -132,7 +132,7 @@ $(function() {
 			if (lastPos) {
 				var dist = Math.sqrt( Math.pow((lastPos.x - pos.x), 2) + Math.pow((lastPos.y - pos.y ), 2) );
 				if  (dist > dist_max && interpolate) {
-					p = lineInterpolate( lastPos, pos, dist_min );
+					p = lineInterpolate( lastPos, pos, dist_min, dist );
 					for (var i = 0; i < p.length-1; i++) {
 						addPoint(p[i+1]);
 						addLine(p[i],p[i+1]);
@@ -251,7 +251,10 @@ $(function() {
 			toogleInterpolate();
 		}
 		if (event.key == 'g') {
-			toggleGrid();
+			toogleGrid();
+		}
+		if (event.key == 'c') {
+			clear();
 		}
 		if (event.key == 'b') {
 			load_image_dialog.showModal();

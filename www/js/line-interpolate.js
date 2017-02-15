@@ -1,11 +1,12 @@
-function lineInterpolate( point1, point2, distance )
+function lineInterpolate( point1, point2, distance, total )
 {
   var xabs = Math.abs( point1.x - point2.x );
   var yabs = Math.abs( point1.y - point2.y );
   var xdiff = point2.x - point1.x;
   var ydiff = point2.y - point1.y;
 
-  var length = Math.sqrt( ( Math.pow( xabs, 2 ) + Math.pow( yabs, 2 ) ) );
+  var length = total;
+  if (!total) length = Math.sqrt( ( Math.pow( xabs, 2 ) + Math.pow( yabs, 2 ) ) );
   var steps = length / distance;
   var xstep = xdiff / steps;
   var ystep = ydiff / steps;
