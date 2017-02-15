@@ -15,8 +15,8 @@ $(function() {
 	var isJump = false;
 	var dragged = false;
 	var interpolate = false;
-	var dist_min = 8;
-	var dist_max = 10;
+	var dist_min = 9;
+	var dist_max = 12;
 
 	// TODO: PAN/Zoom
 	// TODO: plus pinch-to-zoom for mobile.
