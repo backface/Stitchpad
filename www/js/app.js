@@ -1,6 +1,6 @@
 
 $(function() {
-	createGrid();
+
 
 	var type = /(canvas|webgl)/.test(url.type) ? url.type : 'svg';
 	var elem = document.getElementById('stage');
@@ -18,6 +18,7 @@ $(function() {
 	var interpolate = false;
 	var dist_min = 8;
 	var dist_max = 12;
+	var grid_s = 50;
 
 	// TODO: PAN/Zoom
 	// TODO: plus pinch-to-zoom for mobile.
@@ -70,14 +71,39 @@ $(function() {
 
 	});
 	*/
+	var zui = new ZUI(two);
+	zui.addLimits(0.06, 8);
+	var scale = zui.scale;
+
+	$(window).bind('mousewheel wheel', function(event) {
+		var e = event.originalEvent;
+		e.stopPropagation();
+		e.preventDefault();
+		dy = (e.wheelDeltaY || - e.deltaY) / 100;
+
+		zui.zoomBy(dy, e.clientX, e.clientY);
+
+		scale = zui.scale;
+		createGrid(scale);
+	});
+
 	var x, y, line, mouse = new Two.Vector(), randomness = 2;
 	var lastPos = null;
 
+	createGrid(scale);
 
 	var addPoint = function(pos) {
 		var point = two.makeCircle(pos.x, pos.y, 1.5);
-		point.fill = '#000';
+
+		/*point._matrix.manual = true;
+		point._matrix
+	           .identity()
+	           .translate(point.translation.x, point.translation.y)
+	           .rotate(point.rotation)
+	           .scale(1.5,1.5);
+		point._matrix.multiply(offsetMatrix);*/
 		stitches.add(point);
+
 	};
 
 	var addLine = function(pos1, pos2) {
@@ -107,6 +133,7 @@ $(function() {
 	var drag = function(e) {
 			dragged = true;
 			var pos =  new Two.Vector(e.clientX, e.clientY);
+			pos = zui.clientToSurface(pos.x,pos.y);
 			if (lastPos) {
 				var dist = Math.sqrt( Math.pow((lastPos.x - pos.x), 2) + Math.pow((lastPos.y - pos.y ), 2) );
 				if  (dist > dist_max && interpolate) {
@@ -129,6 +156,9 @@ $(function() {
 
 	var dragEnd = function(e) {
 		var pos =  new Two.Vector(e.clientX, e.clientY);
+		pos = zui.clientToSurface(pos.x,pos.y);
+		//ransform="matrix(scaleX 0 0 scaleY x-scaleX*x y-scaleY*y)";
+
 		if (!dragged) {
 			if (lastPos) {
 				var dist = Math.sqrt( Math.pow((lastPos.x - pos.x), 2) + Math.pow((lastPos.y - pos.y ), 2) );
@@ -324,7 +354,7 @@ $(function() {
 	});
 
 	function createGrid(s) {
-		var size = s || 50;
+		var size = s * 50;
 		var two = new Two({
 		  type: Two.Types.canvas, width: size, height: size
 		});
@@ -355,6 +385,8 @@ function onDeviceReady() {
 	console.log(cordova.file.dataDirectory);
     console.log("we Are on cordova!");
 
+	// owerwrite file save functions
+
 	var errorHandler = function (fileName, e) {
 	    var msg = '';
 
@@ -383,19 +415,32 @@ function onDeviceReady() {
 
 	saveAs = function(blob, fileName) {
 		console.log("save via cordova file plugin ");
-        persistentFS= cordova.file.externalDataDirectory; //||cordova.file.DataDirectory||fileSystem.root.toURL();
-		window.resolveLocalFileSystemURL(persistentFS, function (directoryEntry) {
-			directoryEntry.getFile(fileName, { create: true }, function (fileEntry) {
-				fileEntry.createWriter(function (fileWriter) {
-					fileWriter.onwriteend = function (e) {
-						// for real-world usage, you might consider passing a success callback
-						console.log('Write of file "' + fileName + '"" to  ' + directoryEntry.toNativeURL() + ' completed.');
-					};
-					fileWriter.onerror = function (e) {
-						// you could hook this up with our global error handler, or pass in an error callback
-						console.log('Write failed: ' + e.toString());
-					};
-					fileWriter.write(blob);
+		subDir = "Stitchpad";
+        persistentFS=
+			cordova.file.externalRootDirectory  ||
+			cordova.file.externalDataDirectory ||
+		 	cordova.file.documentsDirectory ||
+			cordova.file.applicationStorageDirectory; //||cordova.file.DataDirectory||fileSystem.root.toURL();
+		window.resolveLocalFileSystemURL(persistentFS, function (dirEntry) {
+			dirEntry.getDirectory(subDir, { create: true }, function (directoryEntry) {
+				directoryEntry.getFile(fileName, { create: true }, function (fileEntry) {
+					fileEntry.createWriter(function (fileWriter) {
+						fileWriter.onwriteend = function (e) {
+							// for real-world usage, you might consider passing a success callback
+							window.plugins.toast.showLongBottom('Saved to: ' + directoryEntry.toNativeURL()  + fileName,
+							function(a){console.log('toast success: ' + a);},
+								function(b){console.log('toast error: ' + b);});
+							console.log('Write of file "' + fileName + '"" to  ' + directoryEntry.toNativeURL() + ' completed.');
+						};
+						fileWriter.onerror = function (e) {
+							window.plugins.toast.showLongBottom('Write failed: ' + e.toString(),
+							function(a){console.log('toast success: ' + a);},
+								function(b){alert('toast error: ' + b);});
+							// you could hook this up with our global error handler, or pass in an error callback
+							console.log('Write failed: ' + e.toString());
+						};
+						fileWriter.write(blob);
+					}, errorHandler.bind(null, fileName));
 				}, errorHandler.bind(null, fileName));
 			}, errorHandler.bind(null, fileName));
 		}, errorHandler.bind(null, fileName));

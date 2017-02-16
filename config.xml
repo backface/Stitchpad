@@ -8,6 +8,7 @@
         Michael Aschauer
     </author>
     <content src="index.html" />
+    <preference name="Fullscreen" value="true" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <preference name="AndroidExtraFilesystems" value="files-external,sdcard,files,documents,cache,cache-external,root" />
     <access origin="*" />
@@ -24,7 +25,8 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    <engine name="android" spec="~6.1.2" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="cordova-plugin-file" spec="~4.3.1" />
-    <engine name="android" spec="~6.1.2" />
+    <plugin name="cordova-plugin-x-toast" spec="~2.5.2" />
 </widget>
