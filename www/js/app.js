@@ -203,10 +203,14 @@ $(function() {
 	};
 
 	var undo = function() {
-		turtleShepherd.undoStep();
-		lines.remove(_.last(lines.children));
-		stitches.remove(_.last(stitches.children));
-		lastPos = (_.last(stitches.children).translation);
+		if (turtleShepherd.hasSteps()) {
+			turtleShepherd.undoStep();
+			lines.remove(_.last(lines.children));
+			stitches.remove(_.last(stitches.children));
+			lastPos = (_.last(stitches.children).translation);
+		} else {
+			clear();
+		}
 	};
 
 	// TODO: Save
