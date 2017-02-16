@@ -2,13 +2,14 @@
 $(function() {
 
 
-	var type = /(canvas|webgl)/.test(url.type) ? url.type : 'svg';
+	var type = /(canvas|webgl|svg)/.test(url.type) ? url.type : 'svg';
 	var elem = document.getElementById('stage');
 	var two = new Two({
 		type: Two.Types[type],
 		fullscreen: true,
 		autostart: true
 	}).appendTo(elem);
+
 	var turtleShepherd = new TurtleShepherd();
 
 	var stitches = two.makeGroup();
@@ -23,69 +24,9 @@ $(function() {
 	// TODO: PAN/Zoom
 	// TODO: plus pinch-to-zoom for mobile.
 
-	/*
-
-	var dy = 1;
-	var scene_transform = {
-		ticking: false,
-		initX: 0,
-		initY: 0,
-		initScale: 1,
-		x: 0,
-		y: 0,
-		scale: 1,
-		center: {
-			x: two.width / 2,
-			y: two.height / 2
-		},
-		origin: {},
-	};
-
-	var zui = new ZUI(two);
-	zui.addLimits(0.06, 8);*
-
-	$(window).bind('mousewheel wheel', function(event) {
-		var e = event.originalEvent;
-		e.stopPropagation();
-		e.preventDefault();
-		dy = (e.wheelDeltaY || - e.deltaY) / 100;
-		//zui.zoomBy(dy, e.clientX, e.clientY);
-
-		zui.zoomBy(dy, (two.width / 2), (two.height / 2));
-
-		scene_transform.scale = zui.scale;
-		scene_transform.center.x = e.clientX;
-		scene_transform.center.y = e.clientY;
-
-		// Update canvas zoom. This will alter the X/Y coordinates by a bit.
-		var matrix = zui.zoomSet(scene_transform.scale, (two.width / 2), (two.height / 2));
-
-		// Pull the new X/Y coordinates out of ZUI and keep our stuff in sync.
-		var offset = zui.updateOffset();
-		scene_transform.x = offset.surfaceMatrix.elements[2];
-		scene_transform.y = offset.surfaceMatrix.elements[5];
-
-		var REL_SCALE = 1 / scene_transform.scale;
-		var REL_X = Math.floor((-scene_transform.x + (two.width / 2)) / scene_transform.scale);
-		var REL_Y = Math.floor((-scene_transform.y + (two.height / 2)) / scene_transform.scale);
-
-	});
-	*/
 	var zui = new ZUI(two);
 	zui.addLimits(0.06, 8);
 	var scale = zui.scale;
-
-	$(window).bind('mousewheel wheel', function(event) {
-		var e = event.originalEvent;
-		e.stopPropagation();
-		e.preventDefault();
-		dy = (e.wheelDeltaY || - e.deltaY) / 100;
-
-		zui.zoomBy(dy, e.clientX, e.clientY);
-
-		scale = zui.scale;
-		createGrid(scale);
-	});
 
 	var x, y, line, mouse = new Two.Vector(), randomness = 2;
 	var lastPos = null;
@@ -94,14 +35,6 @@ $(function() {
 
 	var addPoint = function(pos) {
 		var point = two.makeCircle(pos.x, pos.y, 1.5);
-
-		/*point._matrix.manual = true;
-		point._matrix
-	           .identity()
-	           .translate(point.translation.x, point.translation.y)
-	           .rotate(point.rotation)
-	           .scale(1.5,1.5);
-		point._matrix.multiply(offsetMatrix);*/
 		stitches.add(point);
 
 	};
@@ -222,6 +155,44 @@ $(function() {
 			.bind('touchmove', touchDrag)
 			.bind('touchend', touchEnd);
 		return false;
+	});
+
+	$(window).bind('mousewheel wheel', function(event) {
+		var e = event.originalEvent;
+		e.stopPropagation();
+		e.preventDefault();
+		dy = (e.wheelDeltaY || - e.deltaY) / 100;
+
+		zui.zoomBy(dy, e.clientX, e.clientY);
+
+		scale = zui.scale;
+		createGrid(scale);
+	});
+
+	var scaleLast = 0;
+	var mc = new Hammer(elem, {});
+	mc.get('pinch').set({ enable: true });
+	mc.on("pinch", function(event) {
+		//$('.mdl-dialog__title').html(event.distance);
+
+		if (Math.abs(event.scale - scaleLast) > 0.2) {
+			//$(".mdl-layout-title").html(dS);
+			dS = ((event.scale * 200) - 200) / 200;
+			zui.zoomBy(dS, event.center.x, event.center.y);
+			scaleLast = event.scale;
+			createGrid(zui.scale);
+		}
+	});
+	mc.on("pinchstart", function(e) {
+		$("#stage")
+			.unbind('touchmove', touchDrag)
+			.unbind('touchend', touchEnd)
+			.unbind('mousemove', drag)
+			.unbind('mouseup', dragEnd);
+	});
+	mc.on("pinchend", function(e) {
+		$(".mdl-layout-title").html(event.scale);
+
 	});
 
 	var clear = function() {

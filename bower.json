@@ -22,6 +22,8 @@
     "dialog-polyfill": "^0.4.6",
     "jquery": "^3.1.1",
     "turtleshepherd.js": "turtleshepherd#^0.1.3",
-    "roboto-and-material-icons-fonts": "^1.1.0"
+    "roboto-and-material-icons-fonts": "^1.1.0",
+    "hammerjs": "hammer.js#^2.0.8",
+    "jquery-hammerjs": "jquery.hammer.js#^2.0.0"
   }
 }
