@@ -141,6 +141,13 @@ $(function() {
 		return false;
 	};
 
+	/*
+	var pan = function(e) {
+		var sf = zui.clientToSurface(e.deltaX, e.deltaY);
+		zui.translateSurface(sf.x, sf.y);
+		zui.updateSurface();
+	};
+	*/
 	stage = $(two.renderer.domElement).parent();
 	stage
 	 .bind('mousedown', function(e) {
@@ -149,7 +156,9 @@ $(function() {
 			.bind('mousemove', drag)
 			.bind('mouseup', dragEnd);
 		} else {
-			//e.preventDefault();
+			//$(this)
+			//.bind('mousemove', pan);
+			//.bind('mouseup', panEnd);
 		}
 	})
 	 .bind('touchstart', function(e) {
