@@ -186,13 +186,12 @@ $(function() {
 	var mc = new Hammer(elem, {});
 	mc.get('pinch').set({ enable: true });
 	mc.on("pinch", function(event) {
-		//$('.mdl-dialog__title').html(event.distance);
-
-		if (Math.abs(event.scale - scaleLast) > 0.2) {
-			//$(".mdl-layout-title").html(dS);
+		$('.mdl-dialog__title').html(event.scale);
+		//if (Math.abs(event.scale - scaleLast) > 0.1) {
 			dS = ((event.scale * 200) - 200) / 200;
-			zoom(dS, event.center.x, event.center.y);
-		}
+			zui.zoomSet(event.scale, event.center.x, event.center.y);
+			createGrid(zui.scale);
+		//}
 	});
 	mc.on("pinchstart", function(e) {
 		$("#stage")
@@ -266,23 +265,32 @@ $(function() {
 		if (event.key == 'j') {
 			toogleJump();
 		}
-		if (event.key == 'i') {
+		else if (event.key == 'i') {
 			toogleInterpolate();
 		}
-		if (event.key == 'g') {
+		else if (event.key == 'g') {
 			toogleGrid();
 		}
-		if (event.key == 'c') {
+		else if (event.key == 'c') {
 			clear();
 		}
-		if (event.key == 's') {
+		else if (event.key == '+') {
+			zoom(0.05, two.width/2, two.height/2);
+		}
+		else if (event.key == '-') {
+			zoom(-0.05, two.width/2, two.height/2);
+		}
+		else if (event.key == '=') {
+			zui.zoomSet(1, two.width/2, two.height/2);
+		}
+		else if (event.key == 's') {
 			save_dialog.showModal();
 			event.preventDefault();
 		}
-		if (event.key == 'b') {
+		else if (event.key == 'b') {
 			load_image_dialog.showModal();
 		}
-		if (event.key == 'z' && event.ctrlKey) {
+		else if (event.key == 'z' && event.ctrlKey) {
 			undo();
 		}
 	});
@@ -324,11 +332,11 @@ $(function() {
 	});
 
 	$(".ts-zoom-in").click ( function(e) {
-		zoom(0.03, two.width/2, two.height/2);
+		zoom(0.05, two.width/2, two.height/2);
 	});
 
 	$(".ts-zoom-out").click ( function(e) {
-		zoom(-0.03, two.width/2, two.height/2);
+		zoom(-0.05, two.width/2, two.height/2);
 	});
 
 	$(".ts-interpolate").click ( function(e) {
