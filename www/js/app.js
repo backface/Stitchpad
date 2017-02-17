@@ -1,7 +1,5 @@
 
 $(function() {
-
-
 	var type = /(canvas|webgl|svg)/.test(url.type) ? url.type : 'svg';
 	var elem = document.getElementById('stage');
 	var two = new Two({
