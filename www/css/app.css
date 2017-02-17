@@ -33,6 +33,10 @@ svg {background:none}
 	position:absolute;bottom:8px;left:50%;margin-left:-150px;text-align:center;z-index:10000;
 }
 
+.top-nav {
+	position:absolute;top:65px;right:2%;z-index:10000;
+}
+
 
 footer {background:#333;text-align:center;border-top:solid 1px #000;z-index:1000}
 
