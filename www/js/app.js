@@ -144,9 +144,13 @@ $(function() {
 	stage = $(two.renderer.domElement).parent();
 	stage
 	 .bind('mousedown', function(e) {
-		$(this)
-		.bind('mousemove', drag)
-		.bind('mouseup', dragEnd);
+		if ((e.keyCode || e.which) == 1) {
+			$(this)
+			.bind('mousemove', drag)
+			.bind('mouseup', dragEnd);
+		} else {
+			//e.preventDefault();
+		}
 	})
 	 .bind('touchstart', function(e) {
 		e.preventDefault();
