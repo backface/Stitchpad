@@ -30,8 +30,11 @@ svg {background:none}
 .mdl-layout-title {margin-right:20px}
 
 .bottom-nav {
-	position:absolute;bottom:8px;left:0;width:100%;text-align:center;z-index:100000}
-footer {background:#333;text-align:center;border-top:solid 1px #000}
+	position:absolute;bottom:8px;left:50%;margin-left:-150px;text-align:center;z-index:10000;
+}
+
+
+footer {background:#333;text-align:center;border-top:solid 1px #000;z-index:1000}
 
 .file_input_div {
   margin: auto;
