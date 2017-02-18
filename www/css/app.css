@@ -30,20 +30,20 @@ svg {background:none}
 .mdl-layout-title {margin-right:20px}
 
 .bottom-nav {
-	position:absolute;bottom:8px;left:50%;margin-left:-150px;text-align:center;z-index:10000;
+	position:absolute;bottom:8px;left:50%;margin-left:-150px;text-align:center;z-index:4;
 }
 
 .top-nav {
-	position:absolute;top:75px;right:42px;z-index:10000;
+	position:absolute;top:75px;right:42px;z-index:4;
 }
 @media screen and (max-width:1024px) {
 	.top-nav {
-		top:8px;
+		top:8px;right:16px;
 	}
 }
 
 
-footer {background:#333;text-align:center;border-top:solid 1px #000;z-index:1000}
+footer {background:#333;text-align:center;border-top:solid 1px #000;z-index:2}
 
 .file_input_div {
   margin: auto;
