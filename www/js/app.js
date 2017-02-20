@@ -67,7 +67,7 @@ $(function() {
 			pos = zui.clientToSurface(pos.x,pos.y);
 			if (lastPos) {
 				var dist = Math.sqrt( Math.pow((lastPos.x - pos.x), 2) + Math.pow((lastPos.y - pos.y ), 2) );
-				if  (dist > dist_max && interpolate) {
+				if  (dist > dist_max && interpolate && !isJump) {
 					p = lineInterpolate( lastPos, pos, dist_min, dist );
 					for (var i = 0; i < p.length-1; i++) {
 						addPoint(p[i+1]);
@@ -93,7 +93,7 @@ $(function() {
 		if (!dragged) {
 			if (lastPos) {
 				var dist = Math.sqrt( Math.pow((lastPos.x - pos.x), 2) + Math.pow((lastPos.y - pos.y ), 2) );
-				if  (dist > dist_max && interpolate) {
+				if  (dist > dist_max && interpolate && !isJump) {
 					p = lineInterpolate( lastPos, pos, dist_min, dist );
 					for (var i = 0; i < p.length-1; i++) {
 						addPoint(p[i+1]);
