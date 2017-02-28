@@ -88,10 +88,12 @@
 			<footer>&nbsp;</footer>
 
 			<div class="bottom-nav">
+			<!--
 				<button title="CLEARSCREEN [C]"
 					class="ts-clear mdl-button mdl-js-button mdl-button--primary mdl-button--fab mdl-button--mini-fab mdl-button--raised mdl-js-ripple-effect">
 				  <i class="material-icons">delete</i>
 				</button>
+			-->
 				<button title="ADD JUMP STITCH [J]"
 					class="ts-jump mdl-button mdl-js-button mdl-button--primary mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect">
 				  <i class="material-icons">flight_takeoff</i>
@@ -205,6 +207,9 @@
 					//there is some error
 				}
 				load_image_dialog.close();
+				if ( $(".mdl-layout__drawer").hasClass("is-visible") ) {
+					$( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" );
+				}
 			});
 
 			$(".ts-image-clear").click( function(){
@@ -287,6 +292,9 @@
 			});
 			about_dialog_close_button.click( function(e) {
 				about_dialog.close();
+				if ( $(".mdl-layout__drawer").hasClass("is-visible") ) {
+					$( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" );
+				}
 			});
 		</script>
 

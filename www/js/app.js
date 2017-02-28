@@ -205,12 +205,19 @@ $(function() {
 
 	});
 
+	var closeDrawer = function () {
+		if ( $(".mdl-layout__drawer").hasClass("is-visible") ) {
+			$( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" );
+		}
+	};
+
 	var clear = function() {
 		turtleShepherd.clear();
 		two.clear();
 		lines =  two.makeGroup();
 		stitches = two.makeGroup();
 		lastPos = null;
+		closeDrawer();
 	};
 
 	var undo = function() {
@@ -257,6 +264,7 @@ $(function() {
 		format =  $(this).find('input[name=format]').filter(':checked').val();
 		save(format,name);
 		save_dialog.close();
+		closeDrawer();
 		return false;
 	});
 
