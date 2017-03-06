@@ -270,36 +270,38 @@ $(function() {
 
 
 	$(window).bind('keydown', function(event) {
-		if (event.key == 'j') {
-			toogleJump();
-		}
-		else if (event.key == 'i') {
-			toogleInterpolate();
-		}
-		else if (event.key == 'g') {
-			toogleGrid();
-		}
-		else if (event.key == 'c') {
-			clear();
-		}
-		else if (event.key == '+') {
-			zoom(0.05, two.width/2, two.height/2);
-		}
-		else if (event.key == '-') {
-			zoom(-0.05, two.width/2, two.height/2);
-		}
-		else if (event.key == '=') {
-			zui.zoomSet(1, two.width/2, two.height/2);
-		}
-		else if (event.key == 's') {
-			save_dialog.showModal();
-			event.preventDefault();
-		}
-		else if (event.key == 'b') {
-			load_image_dialog.showModal();
-		}
-		else if (event.key == 'z' && event.ctrlKey) {
-			undo();
+		if (!$('.ts-save-dialog').is(":visible")) {
+			if (event.key == 'j') {
+				toogleJump();
+			}
+			else if (event.key == 'i') {
+				toogleInterpolate();
+			}
+			else if (event.key == 'g') {
+				toogleGrid();
+			}
+			else if (event.key == 'c') {
+				clear();
+			}
+			else if (event.key == '+') {
+				zoom(0.05, two.width/2, two.height/2);
+			}
+			else if (event.key == '-') {
+				zoom(-0.05, two.width/2, two.height/2);
+			}
+			else if (event.key == '=') {
+				zui.zoomSet(1, two.width/2, two.height/2);
+			}
+			else if (event.key == 's') {
+				save_dialog.showModal();
+				event.preventDefault();
+			}
+			else if (event.key == 'b') {
+				load_image_dialog.showModal();
+			}
+			else if (event.key == 'z' && event.ctrlKey) {
+				undo();
+			}
 		}
 	});
 
