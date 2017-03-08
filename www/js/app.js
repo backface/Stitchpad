@@ -174,6 +174,12 @@ $(function() {
 		createGrid(scale);
 	};
 
+	var resetView = function() {
+		zui.reset();
+		zoom(0.001,  two.width/2, two.width/2);
+		zoom(-0.001,  two.width/2, two.width/2);
+	};
+
 	$(window).bind('mousewheel wheel', function(event) {
 		var e = event.originalEvent;
 		e.stopPropagation();
@@ -290,7 +296,7 @@ $(function() {
 				zoom(-0.05, two.width/2, two.height/2);
 			}
 			else if (event.key == '=') {
-				zui.zoomSet(1, two.width/2, two.height/2);
+				resetView();
 			}
 			else if (event.key == 's') {
 				save_dialog.showModal();
@@ -347,6 +353,10 @@ $(function() {
 
 	$(".ts-zoom-out").click ( function(e) {
 		zoom(-0.05, two.width/2, two.height/2);
+	});
+
+	$(".ts-reset-view").click ( function(e) {
+		resetView();
 	});
 
 	$(".ts-interpolate").click ( function(e) {
