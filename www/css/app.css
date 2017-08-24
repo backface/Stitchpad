@@ -7,6 +7,8 @@ html, body {
 }
 h4.mdl-dialog__title {font-size:24px}
 
+bottom-nav {font-size:1.2em}
+
 #stage,
 #back,
 #grid {

@@ -331,10 +331,11 @@ $(function() {
 
 	var toogleGrid = function() {
 		$("#grid").toggle();
-		if ($(".grid").is(":visible"))
+		if ($("#grid").is(":visible")) {
 			$(".ts-grid i").html("grid_off");
-		else
+		} else {
 			$(".ts-grid i").html("grid_on");
+		}
 	};
 
 
