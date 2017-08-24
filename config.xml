@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.stitchpad" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.stitchpad" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Stichpad</name>
     <description>
         A sketch block for drawing simple embroidery graphics
@@ -20,6 +20,10 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <icon density="ldpi" src="www/res/icon/android/icon-ldpi.png" />
+        <icon density="mdpi" src="www/res/icon/android/icon-mdpi.png" />
+        <icon density="hdpi" src="www/res/icon/android/icon-hdpi.png" />
+        <icon density="xhdpi" src="www/res/icon/android/icon-xhdpi.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
