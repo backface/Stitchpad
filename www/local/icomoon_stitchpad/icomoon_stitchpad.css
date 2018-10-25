@@ -1,0 +1,126 @@
+@font-face {
+  font-family: 'icomoon_stitchpad';
+  src:  url('fonts/icomoon_stitchpad.eot?4m0dyv');
+  src:  url('fonts/icomoon_stitchpad.eot?4m0dyv#iefix') format('embedded-opentype'),
+    url('fonts/icomoon_stitchpad.ttf?4m0dyv') format('truetype'),
+    url('fonts/icomoon_stitchpad.woff?4m0dyv') format('woff'),
+    url('fonts/icomoon_stitchpad.svg?4m0dyv#icomoon_stitchpad') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon_stitchpad' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1.4em;
+  font-size:1.3em;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-fingerstitch:before {
+  content: "\e900";
+}
+.icon-center:before {
+  content: "\e901";
+}
+.icon-zoomout:before {
+  content: "\e902";
+}
+.icon-zoomin:before {
+  content: "\e903";
+}
+.icon-undo:before {
+  content: "\e904";
+}
+.icon-save:before {
+  content: "\e905";
+}
+.icon-grid:before {
+  content: "\e906";
+}
+.icon-text:before {
+  content: "\e907";
+}
+.icon-picture:before {
+  content: "\e908";
+}
+.icon-stitch:before {
+  content: "\e909";
+}
+.icon-jump:before {
+  content: "\e90a";
+}
+.icon-jump_pos:before {
+  content: "\e90b";
+}
+.icon-stitch_pos:before {
+  content: "\e90c";
+}
+.icon-picture_pos:before {
+  content: "\e90d";
+}
+.icon-text_pos:before {
+  content: "\e90e";
+}
+.icon-grid_pos:before {
+  content: "\e90f";
+}
+.icon-save_pos:before {
+  content: "\e910";
+}
+.icon-undo_pos:before {
+  content: "\e911";
+}
+.icon-zoomin_pos:before {
+  content: "\e912";
+}
+.icon-zoomout_pos:before {
+  content: "\e913";
+}
+.icon-center_pos:before {
+  content: "\e914";
+}
+.icon-fingerstitch_pos:before {
+  content: "\e915";
+}
+.icon-center_neg:before {
+  content: "\e916";
+}
+.icon-zoomout_neg:before {
+  content: "\e917";
+}
+.icon-zoomin_neg:before {
+  content: "\e918";
+}
+.icon-undo_neg:before {
+  content: "\e919";
+}
+.icon-save_neg:before {
+  content: "\e91a";
+}
+.icon-grid_neg:before {
+  content: "\e91b";
+}
+.icon-text_neg:before {
+  content: "\e91c";
+}
+.icon-picture_neg:before {
+  content: "\e91d";
+}
+.icon-stitch_neg:before {
+  content: "\e91e";
+}
+.icon-jump_neg:before {
+  content: "\e91f";
+}
+.icon-fingerstitch_neg:before {
+  content: "\e920";
+}
+
