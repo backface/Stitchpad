@@ -239,8 +239,7 @@ $(function() {
 
 	// TODO: Save
 	var save = function (format, name) {
-		name = name || "noname";
-		turtleShepherd.normalize();
+		name = name || "Stitchpad";
 
 		switch (format) {
 			case "exp":
@@ -249,7 +248,7 @@ $(function() {
     			saveAs(blob, name + '.exp');
 				break;
 		    case "dst":
-				expUintArr = turtleShepherd.toDST();
+				expUintArr = turtleShepherd.toDST(name);
 				blob = new Blob([expUintArr], {type: 'application/octet-stream'});
 				saveAs(blob, name + '.dst');
 				break;
