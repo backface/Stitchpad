@@ -391,7 +391,6 @@ $(function() {
 	}
   
   const dropArea = document.getElementById('stage');
-  console.log(document.getElementById('stage'));
 
   dropArea.addEventListener('dragover', (event) => {
     event.stopPropagation();
@@ -408,7 +407,6 @@ $(function() {
 
     for (const file of fileList) {      
       if (!file.name.endsWith("dst")) {
-        console.log("not as dst");
         warn_dialog.showModal();
         return;
       } 
