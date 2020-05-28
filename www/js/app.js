@@ -34,7 +34,6 @@ $(function() {
 	var addPoint = function(pos) {
 		var point = two.makeCircle(pos.x, pos.y, 1.5);
 		stitches.add(point);
-
 	};
 
 	var addLine = function(pos1, pos2) {
@@ -53,11 +52,11 @@ $(function() {
 			turtleShepherd.moveTo(pos1.x, -pos1.y, pos2.x, -pos2.y, false);
 			toogleJump();
 		} else {
-				line = two.makeLine(pos1.x, pos1.y, pos2.x, pos2.y);
-				line.noFill().stroke = '#333';
-				line.linewidth = 2;
-				lines.add(line);
-				turtleShepherd.moveTo(pos1.x, -pos1.y, pos2.x, -pos2.y, true);
+      line = two.makeLine(pos1.x, pos1.y, pos2.x, pos2.y);
+      line.noFill().stroke = '#333';
+      line.linewidth = 2;
+      lines.add(line);
+      turtleShepherd.moveTo(pos1.x, -pos1.y, pos2.x, -pos2.y, true);
 		}
 	};
 
@@ -390,6 +389,72 @@ $(function() {
 			});
 		});
 	}
+  
+  const dropArea = document.getElementById('stage');
+  console.log(document.getElementById('stage'));
+
+  dropArea.addEventListener('dragover', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    // Style the drag-and-drop as a "copy file" operation.
+    event.dataTransfer.dropEffect = 'copy';
+  });
+
+  dropArea.addEventListener('drop', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    
+    const fileList = event.dataTransfer.files;
+
+    for (const file of fileList) {      
+      if (!file.name.endsWith("dst")) {
+        console.log("not as dst");
+        warn_dialog.showModal();
+        return;
+      } 
+      const reader = new FileReader();    
+      reader.addEventListener('load', (event) => {                
+        content = new jDataView(event.target.result, 0, event.size);            
+        turtleShepherd.fromDST(content);
+        turtleShepherd.normalize();
+        cache = turtleShepherd.cache;         
+        two.clear();
+        lines =  two.makeGroup();
+        stitches = two.makeGroup();        
+        last_point = false        
+        for (i=0; i < cache.length; i++) {
+          if (cache[i].cmd == "move") {            
+            pos_x = (two.width - turtleShepherd.maxX)/2  + cache[i].x              
+            pos_y = (two.height + turtleShepherd.maxY)/2 - cache[i].y            
+            point = new Two.Vector(pos_x, pos_y);
+            addPoint(point)
+            if (last_point) {
+              if(cache[i].penDown) {
+                line = two.makeLine(last_point.x, last_point.y, point.x, point.y);
+                    line.noFill().stroke = '#333';
+                    line.linewidth = 2;
+                    lines.add(line);
+                } else {
+                  line = two.makeLine(last_point.x, last_point.y, point.x, point.y);
+                  line.noFill().stroke = '#f00';
+                  line.linewidth = 1;
+                  line.opacity = 0.5;
+              }
+            }
+            last_point = point;
+          }          
+        }        
+        lastPos = last_point;        
+      });
+      reader.addEventListener('progress', (event) => {
+        if (event.loaded && event.total) {
+          const percent = (event.loaded / event.total) * 100;
+          console.log(`Progress: ${Math.round(percent)}`);
+        }
+      });      
+      reader.readAsArrayBuffer(file);  
+    };    
+  });
 
 });
 

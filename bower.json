@@ -24,6 +24,7 @@
     "roboto-and-material-icons-fonts": "^1.1.0",
     "hammerjs": "hammer.js#^2.0.8",
     "jquery-hammerjs": "jquery.hammer.js#^2.0.0",
-    "turtleshepherd.js": "turtleshepherd#0.2.2"
+    "turtleshepherd.js": "turtleshepherd#0.2.2",
+    "jdataview": "^2.5.0"
   }
 }

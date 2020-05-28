@@ -29,6 +29,7 @@
 		<script src="lib/two.js/build/two.min.js"></script>
 		<script src="lib/hammerjs/hammer.min.js"></script>
 		<script src="lib/jquery-hammerjs/jquery.hammer.js"></script>
+    <script src="lib/jdataview/dist/browser/jdataview.js"></script>
 
 		<script src="local/file-saver/FileSaver.min.js"></script>
 		<script src="lib/turtleshepherd.js/turtleShepherd.js"></script>
@@ -298,6 +299,31 @@
 			});
 			about_dialog_close_button.click( function(e) {
 				about_dialog.close();
+				if ( $(".mdl-layout__drawer").hasClass("is-visible") ) {
+					$( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" );
+				}
+			});
+		</script>
+    
+    <dialog id="ts-warn-dialog" class="mdl-dialog" style="min-width:30%">
+			<h4 class="mdl-dialog__title">Error</h4>
+			<div class="mdl-dialog__content">
+				<p class="mdl-dialog__text">Wrong file format</p>
+        <div class="mdl-dialog__actions">
+			  <button type="button" class="mdl-button" id="ts-warn-close">Close</button>
+			</div>
+		</dialog>
+
+		<script>
+			var warn_dialog = document.querySelector('#ts-warn-dialog')
+			var warn_dialog_close_button = $('#ts-warn-close');
+
+			if (!warn_dialog.showModal) {
+				dialogPolyfill.registerDialog(warn_dialog);
+			}
+  
+			warn_dialog_close_button.click( function(e) {
+				warn_dialog.close();
 				if ( $(".mdl-layout__drawer").hasClass("is-visible") ) {
 					$( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" );
 				}
