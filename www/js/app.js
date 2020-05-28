@@ -335,7 +335,11 @@ $(function() {
 			$(".ts-grid i").html("grid_on");
 		}
 	};
-
+  
+  $(".ts-import").click ( function(e) {
+    $( 'div[class^="mdl-layout__obfuscator"]' ).trigger( "click" );
+    $('#file_import').trigger("click");    
+	});
 
 	$(".ts-clear").click ( function(e) {
 		e.preventDefault();
@@ -400,10 +404,21 @@ $(function() {
   });
 
   dropArea.addEventListener('drop', (event) => {
+    handleFileSelection(event) 
+  });
+  
+  document.getElementById('file_import').addEventListener('change', (event) => {
+    handleFileSelection(event) 
+  });
+    
+
+    
+  function handleFileSelection(event) {
+
     event.stopPropagation();
     event.preventDefault();
     
-    const fileList = event.dataTransfer.files;
+    var fileList = event.dataTransfer ? event.dataTransfer.files : event.target.files;
 
     for (const file of fileList) {      
       if (!file.name.endsWith("dst")) {
@@ -452,7 +467,7 @@ $(function() {
       });      
       reader.readAsArrayBuffer(file);  
     };    
-  });
+  };
 
 });
 
