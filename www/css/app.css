@@ -32,7 +32,9 @@ svg {background:none}
 .mdl-layout-title {margin-right:20px}
 
 .bottom-nav {
-	position:absolute;bottom:8px;left:50%;margin-left:-150px;text-align:center;z-index:4;
+	position:absolute;bottom:8px;left:50%;min-width:275px;
+  transform:translate(-50%,0%);
+  text-align:center;z-index:4;
 }
 
 .top-nav {
